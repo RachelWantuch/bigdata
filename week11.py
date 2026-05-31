@@ -22,7 +22,7 @@ assembler = VectorAssembler(
     outputCol="features",
     handleInvalid="skip"  # Skip rows with null values
 )
-assembled_df = assembler.transform(athlete_df).select("features", "perforamance_score")
+assembled_df = assembler.transform(athlete_df).select("features", "performance_score")
 
 # Step 5: Split the data into training and testing sets
 train_data, test_data = assembled_df.randomSplit([0.7, 0.3], seed=42)
