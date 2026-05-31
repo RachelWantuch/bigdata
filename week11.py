@@ -7,11 +7,7 @@ import happybase
 spark = SparkSession.builder.appName("MLib Athlete Success").enableHiveSupport().getOrCreate()
 
 # Step 2: Load the data from the Hive table 'athlete' into a Spark DataFrame
-athlete_df = spark.sql("""SELECT
-                        CAST (training_hours_per_week AS INT) AS training_hours_per_week,
-                        CAST (performance_score AS INT) AS performance_score
-                        FROM athlete
-""")
+athlete_df = spark.sql("SELECT training_hours_per_week, performance_score FROM athlete")
 
 # Step 3: Handle null values by either dropping or filling them
 athlete_df = athlete_df.na.drop()  # Drop rows with null values
