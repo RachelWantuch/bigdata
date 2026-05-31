@@ -7,7 +7,7 @@ import happybase
 spark = SparkSession.builder.appName("MLib Athlete Success").enableHiveSupport().getOrCreate()
 
 # Step 2: Load the data from the Hive table 'gradesml' into a Spark DataFrame
-athlete_df = spark.sql("SELECT athlete_id, age, gender, height_cm, weight_kg, training_intensity, training_hours_per_week, recovery_days_per_week,  match_count_per_week, rest_between_event_days, fatigue_score, performance_score, team_contribution_score, load_balance_score, acl_risk_score, injur_indicator, heartbeat FROM athlete")
+athlete_df = spark.sql("SELECT athlete_id, age, gender, height_cm, weight_kg, training_intensity, training_hours_per_week, recovery_days_per_week,  match_count_per_week, rest_between_event_days, fatigue_score, performance_score, team_contribution_score, load_balance_score, acl_risk_score, injury_indicator, heartbeat FROM athlete")
 
 # Step 3: Handle null values by either dropping or filling them
 athlete_df = athlete_df.na.drop()  # Drop rows with null values
