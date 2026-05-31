@@ -6,15 +6,19 @@ import happybase
 # Step 1: Create a Spark session
 spark = SparkSession.builder.appName("MLib Athlete Success").enableHiveSupport().getOrCreate()
 
-# Step 2: Load the data from the Hive table 'gradesml' into a Spark DataFrame
-athlete_df = spark.sql("SELECT age, height_cm, weight_kg, training_hours_per_week, recovery_days_per_week, match_count_per_week, rest_between_event_days, fatigue_score, performance_score, team_contribution_score, load_balance_score, acl_risk_score, heartbeat FROM athlete")
+# Step 2: Load the data from the Hive table 'athlete' into a Spark DataFrame
+athlete_df = spark.sql("""SELECT
+                        CAST (training_hours_per_week AS INT) AS training_hours_per_week,
+                        CAST (performance_score AS INT) AS performance_score
+                        FROM athlete
+""")
 
 # Step 3: Handle null values by either dropping or filling them
 athlete_df = athlete_df.na.drop()  # Drop rows with null values
 
 # Step 4: Prepare the data for MLlib by assembling features into a vector
 assembler = VectorAssembler(
-    inputCols=["age", "height_cm", "weight_kg", "training_hours_per_week", "recovery_days_per_week", "match_count_per_week", "rest_between_event_days", "fatigue_score", "team_contribution_score", "load_balance_score", "acl_risk_score", "heartbeat"], 
+    inputCols=[" training_hours_per_week"], 
     outputCol="features",
     handleInvalid="skip"  # Skip rows with null values
 )
