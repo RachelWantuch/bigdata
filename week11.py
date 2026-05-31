@@ -14,7 +14,7 @@ athlete_df = athlete_df.na.drop()  # Drop rows with null values
 
 # Step 4: Prepare the data for MLlib by assembling features into a vector
 assembler = VectorAssembler(
-    inputCols=[" training_hours_per_week"], 
+    inputCols=["training_hours_per_week"], 
     outputCol="features",
     handleInvalid="skip"  # Skip rows with null values
 )
