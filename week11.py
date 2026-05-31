@@ -21,7 +21,7 @@ assembler = VectorAssembler(
 assembled_df = assembler.transform(athlete_df).select("features", "perforamance_score")
 
 # Step 5: Split the data into training and testing sets
-train_data, test_data = assembled_df.randomSplit([0.7, 0.3])
+train_data, test_data = assembled_df.randomSplit([0.7, 0.3], seed=42)
 
 # Step 6: Initialize and train a Linear Regression model
 lr = LinearRegression(labelCol="performance_score")
@@ -45,7 +45,7 @@ data = [
 def write_to_hbase_partition(partition):
     connection = happybase.Connection('master')
     connection.open()
-    table = connection.table('athlete_metrics')  # Update table name
+    table = connection.table('athlete_metrics')  # this is my hbase table
     for row in partition:
         row_key, column, value = row
         table.put(row_key, {column: value})
