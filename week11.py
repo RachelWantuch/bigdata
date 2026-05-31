@@ -36,24 +36,14 @@ print(f"R^2: {test_results.r2}")
 
 # ---- Write metrics to HBase with happybase (using the provided pattern) ----
 # Example data (row_key, column_family:column, value) populated with the metrics
-data = [
-    ('metrics1', 'cf:rmse', str(test_results.rootMeanSquaredError)),
-    ('metrics1', 'cf:r2',   str(test_results.r2)),
-]
+#data = [
+ #   ('metrics1', 'cf:rmse', str(test_results.rootMeanSquaredError)),
+  #  ('metrics1', 'cf:r2',   str(test_results.r2)),
+#]
 
-# Function to write data to HBase inside each partition
-def write_to_hbase_partition(partition):
-    connection = happybase.Connection('master')
-    connection.open()
-    table = connection.table('athlete_metrics')  # this is my hbase table
-    for row in partition:
-        row_key, column, value = row
-        table.put(row_key, {column: value})
-    connection.close()
+output_path = "hdfs:///tmp/week11_output"
+test_results.saveAsTextFile(output_path)
 
-# Parallelize data and apply the function with foreachPartition
-rdd = spark.sparkContext.parallelize(data)
-rdd.foreachPartition(write_to_hbase_partition)
 
 # Step 9: Stop the Spark session
 spark.stop()
